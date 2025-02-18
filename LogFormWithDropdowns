@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body { font-family: Arial, sans-serif; padding: 10px; }
+      select, input, button { padding: 8px; width: 100%; margin-top: 10px; }
+      button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+      button:hover { background-color: #45a049; }
+    </style>
+  </head>
+  <body>
+    <h3>Log Entry Form</h3>
+    
+    <label for="month">Month:</label>
+    <select id="month"></select>
+    
+    <label for="date">Date:</label>
+    <input type="date" id="date">
+    
+    <label for="timeIn">Time In:</label>
+    <input type="time" id="timeIn">
+    
+    <label for="timeOut">Time Out:</label>
+    <input type="time" id="timeOut">
+    
+    <label for="task">Task:</label>
+    <input type="text" id="task" placeholder="Task description">
+    
+    <button onclick="submitLog()">Submit</button>
+
+    <script>
+      function fillMonthDropdown(months) {
+        var dropdown = document.getElementById('month');
+        months.forEach(function(month) {
+          var option = document.createElement('option');
+          option.value = month;
+          option.textContent = month;
+          dropdown.appendChild(option);
+        });
+      }
+
+      function submitLog() {
+        var month = document.getElementById("month").value;
+        var date = document.getElementById("date").value;
+        var timeIn = document.getElementById("timeIn").value;
+        var timeOut = document.getElementById("timeOut").value;
+        var task = document.getElementById("task").value;
+
+        if (month && date && timeIn && timeOut && task) {
+          google.script.run.submitLogForm(month, date, timeIn, timeOut, task);
+          alert("Log Submitted Successfully!");
+        } else {
+          alert("Please fill all fields!");
+        }
+      }
+
+      window.onload = function() {
+        google.script.run.withSuccessHandler(fillMonthDropdown).getAvailableMonths();
+      };
+    </script>
+  </body>
+</html>
